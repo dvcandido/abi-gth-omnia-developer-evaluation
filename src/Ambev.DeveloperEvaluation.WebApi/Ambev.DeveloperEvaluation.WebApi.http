@@ -1,6 +1,17 @@
 @Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5119
 
-GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
+//Criar um user
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/Users
+Content-Type: application/json
 
-###
+{
+  "username": "dvcandido",
+  "password": "Shiba@25",
+  "phone": "11912629273",
+  "email": "douglasvaz@hotmail.com",
+  "status": 1,
+  "role": 3
+}
+
+### Get um user
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/Users/d00a718a-9277-4127-88c7-2f42b4d9778e
