@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
-using MediatR;
+﻿using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 

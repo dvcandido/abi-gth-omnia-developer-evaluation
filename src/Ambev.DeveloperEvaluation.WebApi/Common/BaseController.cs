@@ -19,6 +19,9 @@ public class BaseController : ControllerBase
     protected IActionResult Ok(string message = "") =>
             base.Ok(new ApiResponse { Message = message, Success = true });
 
+    protected IActionResult OkPaginated<T>(T Data) =>
+            base.Ok(Data);
+
     protected IActionResult Created<T>(string routeName, object routeValues, T data) =>
         base.CreatedAtRoute(routeName, routeValues, new ApiResponseWithData<T> { Data = data, Success = true });
 

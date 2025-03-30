@@ -3,7 +3,6 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using OneOf.Types;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 

@@ -7,7 +7,6 @@ internal class GetProductValidator : AbstractValidator<GetProductQuery>
     public GetProductValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("Product ID is required.")
-            .NotEqual(Guid.Empty).WithMessage("Product ID must be a valid GUID.");
+            .NotEmpty().WithMessage("Product ID is required.");
     }
 }

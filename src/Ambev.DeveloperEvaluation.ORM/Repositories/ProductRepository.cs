@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories
 {
@@ -32,26 +33,29 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
 
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync(int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<Product> Products, int TotalCount)> GetAllAsync(int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
         {
             var query = _context.Products.AsNoTracking();
             query = ApplyOrdering(order, query);
 
-            return await query.Skip((page - 1) * size).Take(size).ToListAsync(cancellationToken);
+            var totalCount = await query.CountAsync(cancellationToken);
+            var products = await query.Skip((page - 1) * size).Take(size).ToListAsync(cancellationToken);
 
+            return (products, totalCount);
         }
 
-        public async Task<IEnumerable<Product>> GetByCategoryAsync(string category, int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<Product> Products, int TotalCount)> GetAllByCategoryAsync(string category, int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
         {
             var query = _context.Products.AsNoTracking();
+            
             query = ApplyOrdering(order, query);
 
-            if (!string.IsNullOrEmpty(category))
-            {
-                query = query.Where(p => p.Category == category);
-            }
+            query = query.Where(p => p.Category == category);
 
-            return await query.Skip((page - 1) * size).Take(size).ToListAsync(cancellationToken);
+            var totalCount = await query.CountAsync(cancellationToken);
+            var products = await query.Skip((page - 1) * size).Take(size).ToListAsync(cancellationToken);
+
+            return (products, totalCount);
         }
 
         public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -68,7 +72,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             }
 
             _context.Entry(existingProduct).CurrentValues.SetValues(product);
-            
+
             existingProduct.Rating = product.Rating;
 
             await _context.SaveChangesAsync(cancellationToken);
@@ -80,28 +84,41 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             {
                 var orders = order.Split(',');
 
+                IOrderedQueryable<Product>? orderedQuery = null;
+
                 foreach (var o in orders)
                 {
                     var parts = o.Trim().Split(' ');
                     if (parts.Length == 0) continue;
 
-                    var property = parts[0];
+                    var property = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(parts[0]);
                     var direction = parts.Length > 1 ? parts[1] : "asc";
 
                     if (!IsValidProperty<Product>(property)) continue;
 
-                    if (direction == "asc")
+                    if (orderedQuery == null)
                     {
-                        query = query.OrderBy(e => EF.Property<object>(e, property));
+                        orderedQuery = direction == "asc"
+                            ? query.OrderBy(e => EF.Property<object>(e, property))
+                            : query.OrderByDescending(e => EF.Property<object>(e, property));
                     }
                     else
                     {
-                        query = query.OrderByDescending(e => EF.Property<object>(e, property));
+                        orderedQuery = direction == "asc"
+                            ? orderedQuery.ThenBy(e => EF.Property<object>(e, property))
+                            : orderedQuery.ThenByDescending(e => EF.Property<object>(e, property));
                     }
                 }
+
+                return orderedQuery ?? query;
             }
 
             return query;
+        }
+
+        public async Task<IEnumerable<string>> GetCategoriesAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Products.Select(p => p.Category).Distinct().ToListAsync(cancellationToken);
         }
 
         private static bool IsValidProperty<T>(string propertyName) => typeof(T).GetProperty(propertyName) != null;

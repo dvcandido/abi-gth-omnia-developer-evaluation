@@ -2,14 +2,14 @@
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using AutoMapper;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct
+namespace Ambev.DeveloperEvaluation.Application.Products.GetAllProduct
 {
     internal class CreateProductProfile : Profile
     {
         public CreateProductProfile()
         {
-            CreateMap<Product, GetProductResult>();
-            CreateMap<Rating, GetRatingResult>();
+            CreateMap<Product, GetAllProductItemResult>();
+            CreateMap<Rating, GetAllProductRatingResult>();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using AutoMapper;
-using MediatR;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 

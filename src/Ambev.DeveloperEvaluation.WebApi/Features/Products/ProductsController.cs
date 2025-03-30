@@ -1,14 +1,19 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
+using Ambev.DeveloperEvaluation.Application.Products.GetAllCategories;
+using Ambev.DeveloperEvaluation.Application.Products.GetAllProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetAllProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetAllProductByCategory;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Ambev.DeveloperEvaluation.Application.Products.GetAllProductByCategory;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
 
@@ -38,6 +43,20 @@ public class ProductsController : BaseController
         return Ok(_mapper.Map<GetProductResponse>(response));
     }
 
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginatedList<GetAllProductResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllProducts(
+            [FromQuery] GetAllProductRequest request, CancellationToken cancellationToken = default)
+    {
+        var query = _mapper.Map<GetAllProductQuery>(request);
+
+        var result = await _mediator.Send(query, cancellationToken);
+
+        return OkPaginated(_mapper.Map<GetAllProductResponse>(result));
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -58,9 +77,9 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponseWithData<UpdateProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult>UpdateProduct([FromRoute] Guid id,[FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UpdateProductCommand>(request,opt => opt.Items["ProductId"] = id);
+        var command = _mapper.Map<UpdateProductCommand>(request, opt => opt.Items["ProductId"] = id);
         var response = await _mediator.Send(command, cancellationToken);
 
         return Created(string.Empty, new ApiResponseWithData<UpdateProductResponse>
@@ -81,5 +100,31 @@ public class ProductsController : BaseController
         await _mediator.Send(command, cancellationToken);
 
         return Ok("Product deleted successfully");
+    }
+
+    [HttpGet("categories")]
+    [ProducesResponseType(typeof(ApiResponseWithData<List<string>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllCategories(CancellationToken cancellationToken)
+    {
+        var query = new GetAllCategoriesQuery();
+        var categories = await _mediator.Send(query, cancellationToken);
+
+        return Ok(categories);
+    }
+
+    [HttpGet("category/{category}")]
+    [ProducesResponseType(typeof(PaginatedList<GetAllProductByCategoryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetProductsByCategory(
+    [FromRoute] string category,
+    [FromQuery] GetAllProductByCategoryRequest request,
+    CancellationToken cancellationToken)
+    {
+        var query = _mapper.Map<GetAllProductByCategoryQuery>(request, opt => opt.Items["Category"] = category);
+
+        var result = await _mediator.Send(query, cancellationToken);
+
+        return OkPaginated(_mapper.Map<GetAllProductByCategoryResponse>(result));
     }
 }
