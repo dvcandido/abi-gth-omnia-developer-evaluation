@@ -1,0 +1,74 @@
+@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5119
+
+@ProductId = 8037e275-d877-4073-887b-c27655f51dfb
+
+### Criar um produto
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "title": "Cerveja Pilsen",
+  "description": "Cerveja clara e refrescante",
+  "category": "Bebidas",
+  "price": 12.50,
+  "image": "https://example.com/images/cerveja-pilsen.jpg",
+  "rating": {
+    "rate": 4.5,
+    "count": 120
+  }
+}
+
+### Testar validação (exemplo com nome vazio)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "Produto sem título",
+  "category": "Diversos",
+  "price": 10.00,
+  "image": "https://example.com/images/produto.jpg",
+  "rating": {
+    "rate": 0,
+    "count": 0
+  }
+}
+
+### PUT um produto
+PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/{{ProductId}}
+Content-Type: application/json
+
+{
+  "title": "Cerveja Pilsen Atibaia 2",
+  "description": "Cerveja clara e refrescante",
+  "category": "Bebidas",
+  "price": 20.50,
+  "image": "https://example.com/images/cerveja-pilsen-atibaia.jpg",
+  "rating": {
+    "rate": 2,
+    "count": 10
+  }
+}
+### Delete um produto
+DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/{{ProductId}}
+
+### Delete um produto com Id em branco
+DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/00000000-0000-0000-0000-000000000001
+
+### Get um produto
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/{{ProductId}}
+
+### Get um produto com Id em branco
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/00000000-0000-0000-0000-000000000001
+
+### GetAll produtos por _page e _size
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products?_page=4&_size=5&_order=title%20desc%2C%20price%20asc
+
+### GetAll produtos orderm invalido
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products?_page=4&_size=5&_order=titledesc
+
+### GetCategories 
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/categories
+
+### GetCategories 
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/products/category/Bebidas?_page=1&_size=2&_order=title%20asc
