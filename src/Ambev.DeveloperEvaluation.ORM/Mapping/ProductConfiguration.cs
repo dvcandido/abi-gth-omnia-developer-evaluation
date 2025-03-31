@@ -26,7 +26,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
 
             builder.Property(p => p.Price)
                 .IsRequired()
-                .HasPrecision(18, 2); // Precisão para valores decimais
+                .HasPrecision(18, 2);
 
             builder.Property(p => p.Image)
                 .HasMaxLength(500);

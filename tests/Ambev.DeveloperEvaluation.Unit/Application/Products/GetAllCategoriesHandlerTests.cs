@@ -20,17 +20,17 @@ public class GetAllCategoriesHandlerTests
     [Fact(DisplayName = "Given request to get all categories When handling Then returns category list")]
     public async Task Handle_Request_ReturnsCategoryList()
     {
-        // Given
+        // Arrange
         var categories = new List<string> { "Bebidas", "Comidas", "Snacks" };
         _productRepository.GetCategoriesAsync(Arg.Any<CancellationToken>())
             .Returns(categories);
 
         var query = new GetAllCategoriesQuery();
 
-        // When
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        // Then
+        // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(categories);
         await _productRepository.Received(1).GetCategoriesAsync(Arg.Any<CancellationToken>());

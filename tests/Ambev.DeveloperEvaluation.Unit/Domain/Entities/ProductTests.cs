@@ -9,13 +9,13 @@ public class ProductTests
     [Fact(DisplayName = "Validation should pass for valid product data")]
     public void Given_ValidProductData_When_Validated_Then_ShouldReturnValid()
     {
-        // Given
+        // Arrange
         var product = ProductTestData.GenerateValidProduct();
 
-        // When
+        // Act
         var result = product.Validate();
 
-        // Then
+        // Assert
         Assert.True(result.IsValid);
         Assert.Empty(result.Errors);
     }
@@ -23,7 +23,7 @@ public class ProductTests
     [Fact(DisplayName = "Validation should fail for invalid product data")]
     public void Given_InvalidProductData_When_Validated_Then_ShouldReturnInvalid()
     {
-        // Given
+        // Arrange
         var product = new Product
         {
             Title = "",
@@ -34,10 +34,10 @@ public class ProductTests
             Rating = null
         };
 
-        // When
+        // Act
         var result = product.Validate();
 
-        // Then
+        // Assert
         Assert.False(result.IsValid);
         Assert.NotEmpty(result.Errors);
     }
