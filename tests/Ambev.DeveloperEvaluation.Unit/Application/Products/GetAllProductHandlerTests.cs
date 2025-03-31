@@ -26,7 +26,7 @@ public class GetAllProductHandlerTests
     [Fact(DisplayName = "Given valid query When getting products Then returns paginated product response")]
     public async Task Handle_ValidQuery_ReturnsPaginatedResponse()
     {
-        // Given
+        // Arrange
         var query = new GetAllProductQuery(PageNumber: 1, PageSize: 10, Order: "title asc");
 
         var products = new List<Product>
@@ -60,10 +60,10 @@ public class GetAllProductHandlerTests
 
         _mapper.Map<IEnumerable<GetAllProductItemResult>>(products).Returns(productResults);
 
-        // When
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        // Then
+        // Assert
         result.Should().NotBeNull();
         result.Data.Should().HaveCount(1);
         result.TotalItems.Should().Be(1);
@@ -74,13 +74,13 @@ public class GetAllProductHandlerTests
     [Fact(DisplayName = "Given invalid query When getting products Then throws validation exception")]
     public async Task Handle_InvalidQuery_ThrowsValidationException()
     {
-        // Given
+        // Arrange
         var query = new GetAllProductQuery(PageNumber: 0, PageSize: 10, Order: "");
 
-        // When
+        // Act
         var act = () => _handler.Handle(query, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<ValidationException>()
             .WithMessage("*Page must be greater than 0*");
     }
@@ -88,7 +88,7 @@ public class GetAllProductHandlerTests
     [Fact(DisplayName = "Given valid query When getting products Then maps entity to result")]
     public async Task Handle_ValidQuery_MapsProductToResult()
     {
-        // Given
+        // Arrange
         var query = new GetAllProductQuery(1, 10, "");
 
         var products = new List<Product>
@@ -114,10 +114,10 @@ public class GetAllProductHandlerTests
                 new(products[0].Id, products[0].Title, products[0].Description, products[0].Category, products[0].Price, products[0].Image, new GetAllProductRatingResult(4.0m, 20))
             });
 
-        // When
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        // Then
+        // Assert
         _mapper.Received(1).Map<IEnumerable<GetAllProductItemResult>>(products);
     }
 }

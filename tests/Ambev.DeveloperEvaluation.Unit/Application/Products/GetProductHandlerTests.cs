@@ -26,7 +26,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Products
         [Fact(DisplayName = "Given valid product id When getting product Then returns product result")]
         public async Task GivenValidProductId_WhenGettingProduct_ThenReturnsProductResult()
         {
-            // Given
+            // Arrange
             var productId = Guid.NewGuid();
             var query = new GetProductQuery(productId);
 
@@ -55,10 +55,10 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Products
                 .Returns(Task.FromResult(product));
             _mapper.Map<GetProductResult>(product).Returns(expectedResult);
 
-            // When
+            // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            // Then
+            // Assert
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(expectedResult);
             await _repository.Received(1).GetByIdAsync(productId, Arg.Any<CancellationToken>());
@@ -68,30 +68,30 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Products
         [Fact(DisplayName = "Given invalid product id When getting product Then throws validation exception")]
         public async Task GivenInvalidProductId_WhenGettingProduct_ThenThrowsValidationException()
         {
-            // Given
+            // Arrange
             var query = new GetProductQuery(Guid.Empty); // Guid vazio dispara a validação
 
-            // When
+            // Act
             Func<Task> act = async () => await _handler.Handle(query, CancellationToken.None);
 
-            // Then
+            // Assert
             await act.Should().ThrowAsync<ValidationException>();
         }
 
         [Fact(DisplayName = "Given valid product id When product not found Then throws key not found exception")]
         public async Task GivenValidProductId_WhenProductNotFound_ThenThrowsKeyNotFoundException()
         {
-            // Given
+            // Arrange
             var productId = Guid.NewGuid();
             var query = new GetProductQuery(productId);
 
             _repository.GetByIdAsync(productId, Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<Product>(null));
 
-            // When
+            // Act
             Func<Task> act = async () => await _handler.Handle(query, CancellationToken.None);
 
-            // Then
+            // Assert
             await act.Should().ThrowAsync<KeyNotFoundException>()
                 .WithMessage($"User with ID {productId} not found");
         }

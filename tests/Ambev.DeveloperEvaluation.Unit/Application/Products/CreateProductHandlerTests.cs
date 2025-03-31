@@ -26,7 +26,7 @@ public class CreateProductHandlerTests
     [Fact(DisplayName = "Given valid product data When creating product Then returns success response")]
     public async Task Handle_ValidRequest_ReturnsSuccessResponse()
     {
-        // Given
+        // Arrange
         var command = CreateProductHandlerTestData.GenerateValidCommand();
 
         var product = new Product
@@ -55,10 +55,10 @@ public class CreateProductHandlerTests
         _repository.CreateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>())
             .Returns(product);
 
-        // When
+        // Act
         var createProductResult = await _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         createProductResult.Should().NotBeNull();
         createProductResult.Id.Should().Be(product.Id);
         await _repository.Received(1).CreateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>());
@@ -67,20 +67,20 @@ public class CreateProductHandlerTests
     [Fact(DisplayName = "Given invalid product data When creating product Then throws validation exception")]
     public async Task Handle_InvalidRequest_ThrowsValidationException()
     {
-        // Given
+        // Arrange
         var command = new CreateProductCommand("", "", "", -10.0m, "", null);
 
-        // When
+        // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<ValidationException>();
     }
 
     [Fact(DisplayName = "Given valid command When handling Then maps command to product entity")]
     public async Task Handle_ValidRequest_MapsCommandToProduct()
     {
-        // Given
+        // Arrange
         var command = CreateProductHandlerTestData.GenerateValidCommand();
 
         var product = new Product
@@ -97,10 +97,10 @@ public class CreateProductHandlerTests
         _repository.CreateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>())
             .Returns(product);
 
-        // When
+        // Act
         await _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         _mapper.Received(1).Map<Product>(Arg.Is<CreateProductCommand>(c =>
             c.Title == command.Title &&
             c.Description == command.Description &&

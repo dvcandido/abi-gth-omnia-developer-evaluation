@@ -26,7 +26,7 @@ public class GetAllProductByCategoryHandlerTests
     [Fact(DisplayName = "Given valid query When handling Then returns paginated result")]
     public async Task Handle_ValidQuery_ReturnsPaginatedResult()
     {
-        // Given
+        // Arrange
         var query = new GetAllProductByCategoryQuery(1, 10, "title asc", "electronics");
 
         var products = new List<Product>
@@ -62,10 +62,10 @@ public class GetAllProductByCategoryHandlerTests
         _mapper.Map<IEnumerable<GetAllProductByCategoryItemResult>>(products)
                .Returns(mappedResult);
 
-        // When
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        // Then
+        // Assert
         result.Should().NotBeNull();
         result.Data.Should().HaveCount(1);
         result.TotalItems.Should().Be(1);
@@ -76,13 +76,13 @@ public class GetAllProductByCategoryHandlerTests
     [Fact(DisplayName = "Given invalid query When handling Then throws validation exception")]
     public async Task Handle_InvalidQuery_ThrowsValidationException()
     {
-        // Given
+        // Arrange
         var query = new GetAllProductByCategoryQuery(0, 0, "invalid-order", "");
 
-        // When
+        // Act
         var act = async () => await _handler.Handle(query, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<ValidationException>();
     }
 }

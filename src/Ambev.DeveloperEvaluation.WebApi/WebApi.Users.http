@@ -1,4 +1,4 @@
-@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5119
+@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5050
 
 //Criar um user
 POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/Users
@@ -14,4 +14,4 @@ Content-Type: application/json
 }
 
 ### Get um user
-GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/Users/d00a718a-9277-4127-88c7-2f42b4d9778e
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/Users/4a16cb9f-dc72-4e9d-b736-1886319389ba

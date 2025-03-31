@@ -36,9 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Carts\GetCart\" />
     <Folder Include="Features\Products\DeleteProduct\" />
     <Folder Include="Features\Users\GetUser\" />
     <Folder Include="Features\Users\DeleteUser\" />
+    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>

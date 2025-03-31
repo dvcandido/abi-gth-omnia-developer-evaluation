@@ -24,14 +24,14 @@ public class DeleteProductHandlerTests
     [Fact(DisplayName = "Given valid product ID When deleting product Then returns success response")]
     public async Task Handle_ValidRequest_ReturnsSuccessResponse()
     {
-        // Given
+        // Arrange
         var command = new DeleteProductCommand(Guid.NewGuid());
         _repository.DeleteAsync(command.Id, Arg.Any<CancellationToken>()).Returns(true);
 
-        // When
+        // Act
         var response = await _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         response.Should().NotBeNull();
         response.Success.Should().BeTrue();
         await _repository.Received(1).DeleteAsync(command.Id, Arg.Any<CancellationToken>());
@@ -40,13 +40,13 @@ public class DeleteProductHandlerTests
     [Fact(DisplayName = "Given invalid product ID When deleting product Then throws validation exception")]
     public async Task Handle_InvalidRequest_ThrowsValidationException()
     {
-        // Given
+        // Arrange
         var command = new DeleteProductCommand(Guid.Empty);
 
-        // When
+        // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<ValidationException>().Where(ex => ex.Message.Contains("Product ID is required."));
     }
 
@@ -56,14 +56,14 @@ public class DeleteProductHandlerTests
     [Fact(DisplayName = "Given non-existing product ID When deleting product Then throws key not found exception")]
     public async Task Handle_NonExistingProduct_ThrowsKeyNotFoundException()
     {
-        // Given
+        // Arrange
         var command = new DeleteProductCommand(Guid.NewGuid());
         _repository.DeleteAsync(command.Id, Arg.Any<CancellationToken>()).Returns(false);
 
-        // When
+        // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<KeyNotFoundException>().WithMessage($"Product with ID {command.Id} not found");
     }
 }

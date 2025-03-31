@@ -27,7 +27,7 @@ public class UpdateProductHandlerTests
     [Fact(DisplayName = "Given valid product data When updating product Then returns success response")]
     public async Task Handle_ValidRequest_ReturnsSuccessResponse()
     {
-        // Given
+        // Arrange
         var command = UpdateProductHandlerTestData.GenerateValidCommand();
 
         var product = new Product
@@ -50,10 +50,10 @@ public class UpdateProductHandlerTests
         _repository.UpdateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>()).Returns(product);
         _mapper.Map<UpdateProductResponse>(product).Returns(response);
 
-        // When
+        // Act
         var updateProductResponse = await _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         updateProductResponse.Should().NotBeNull();
         updateProductResponse.Id.Should().Be(product.Id);
         await _repository.Received(1).UpdateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>());
@@ -62,29 +62,29 @@ public class UpdateProductHandlerTests
     [Fact(DisplayName = "Given invalid product data When updating product Then throws validation exception")]
     public async Task Handle_InvalidRequest_ThrowsValidationException()
     {
-        // Given
+        // Arrange
         var command = new UpdateProductCommand(Guid.Empty, "", "", "", 0m, "", null);
 
-        // When
+        // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<ValidationException>();
     }
 
     [Fact(DisplayName = "Given non-existent product ID When updating product Then throws KeyNotFoundException")]
     public async Task Handle_ProductNotFound_ThrowsKeyNotFoundException()
     {
-        // Given
+        // Arrange
         var command = UpdateProductHandlerTestData.GenerateValidCommand();
 
         _mapper.Map<Product>(command).Returns(new Product());
         _repository.UpdateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>()).Returns((Product)null);
 
-        // When
+        // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
 
-        // Then
+        // Assert
         await act.Should().ThrowAsync<KeyNotFoundException>().WithMessage($"Product with ID {command.Id} not found");
     }
 }

@@ -47,7 +47,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         public async Task<(IEnumerable<Product> Products, int TotalCount)> GetAllByCategoryAsync(string category, int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
         {
             var query = _context.Products.AsNoTracking();
-            
+
             query = ApplyOrdering(order, query);
 
             query = query.Where(p => p.Category == category);
@@ -78,6 +78,11 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             await _context.SaveChangesAsync(cancellationToken);
             return product;
         }
+        public async Task<IEnumerable<string>> GetCategoriesAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Products.Select(p => p.Category).Distinct().ToListAsync(cancellationToken);
+        }
+
         private static IQueryable<Product> ApplyOrdering(string order, IQueryable<Product> query)
         {
             if (!string.IsNullOrEmpty(order))
@@ -114,11 +119,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             }
 
             return query;
-        }
-
-        public async Task<IEnumerable<string>> GetCategoriesAsync(CancellationToken cancellationToken = default)
-        {
-            return await _context.Products.Select(p => p.Category).Distinct().ToListAsync(cancellationToken);
         }
 
         private static bool IsValidProperty<T>(string propertyName) => typeof(T).GetProperty(propertyName) != null;

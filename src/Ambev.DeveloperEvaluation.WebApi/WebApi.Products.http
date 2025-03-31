@@ -1,4 +1,4 @@
-@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5119
+@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5050
 
 @ProductId = 8037e275-d877-4073-887b-c27655f51dfb
 

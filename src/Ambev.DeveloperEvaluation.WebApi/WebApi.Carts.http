@@ -1,0 +1,59 @@
+@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5050
+
+@UserId = 8037e275-d877-4073-887b-c27655f51dfb
+
+### Post cart
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts
+Content-Type: application/json
+
+{
+  "userId": "4a16cb9f-dc72-4e9d-b736-1886319389ba",
+  "userName": "dvcandido",
+  "date": "2025-03-30T12:00:00Z",
+  "products": [
+    {
+      "productId": "d8c1bf82-1006-4891-af25-4ded061c3c5f",
+      "quantity": 9
+    },
+    {
+      "productId": "ae1820dc-44c1-4a44-a0da-8f6ec3a0e72f",
+      "quantity": 10
+    }
+  ]
+}
+
+### Get cart
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/175f17d0-c8e4-4dab-bce2-e931c619e4ce
+
+### PUT cart
+PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/175f17d0-c8e4-4dab-bce2-e931c619e4ce
+Content-Type: application/json
+
+{
+  "userId": "97986a32-a7b6-4687-9637-a64b7d1ac861",
+  "userName": "dvcandido",
+  "date": "2025-03-30T12:00:00Z",
+  "products": [
+    {
+      "productId": "b95daf8e-035d-4165-904d-0fdfa57af712",
+      "productTitle": "Kit de Degustação",
+      "quantity": 5
+    },
+    {
+      "productId": "6b85aa5a-7025-4480-83d2-4f7a7dd337b2",
+      "productTitle": "Cerveja Red Ale",
+      "quantity": 10
+    },
+    {
+      "productId": "57bbf27f-a33b-4789-a2c7-ccfd8bd4a1ca",
+      "productTitle": "Cerveja Belgian Tripel",
+      "quantity": 1
+    }
+  ]
+}
+
+### Delete cart
+DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/5866d079-452f-4240-bad2-1860b99a8747
+
+### GetAll cart
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts?_page=1&_size=5
