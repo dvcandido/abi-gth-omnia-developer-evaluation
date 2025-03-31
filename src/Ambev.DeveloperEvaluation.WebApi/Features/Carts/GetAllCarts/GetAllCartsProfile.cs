@@ -10,7 +10,8 @@ public class GetAllProductProfile : Profile
         CreateMap<GetAllCartsRequest, GetAllCartsQuery>();
 
         CreateMap<GetAllCartPaginateResult, GetAllCartPaginateResponse>();
-        CreateMap<GetAllCartResult, GetAllCartResponse>();
+        CreateMap<GetAllCartResult, GetAllCartResponse>()
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Items)); 
         CreateMap<GetAllCartItemResult, GetAllCartItemResponse>();
     }
 }

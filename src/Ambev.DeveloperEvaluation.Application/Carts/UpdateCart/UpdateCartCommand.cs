@@ -8,7 +8,7 @@ public record UpdateCartCommand : IRequest<UpdateCartResult>
     public Guid UserId { get; init; }
     public string UserName { get; init; } = string.Empty;
     public DateTime Date { get; init; }
-    public List<UpdateCartItemCommand> Items { get; init; } = [];
+    public IEnumerable<UpdateCartItemCommand> Items { get; init; } = [];
 }
 
-public record UpdateCartItemCommand(Guid ProductId, string ProductTitle, int Quantity);
+public record UpdateCartItemCommand(Guid ProductId, int Quantity);

@@ -15,7 +15,7 @@ public class CartValidatorTests
         // Arrange
         var cart = new Cart(Guid.NewGuid(), DateTime.UtcNow);
         cart.SetUserInfo("John Doe");
-        cart.AddItem(Guid.NewGuid(), "Sample Product", 2);
+        cart.AddItem(Guid.NewGuid(), "Sample Product", 2, 10m);
 
         // Act
         var result = _validator.Validate(cart);

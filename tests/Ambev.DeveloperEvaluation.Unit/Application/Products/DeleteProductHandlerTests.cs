@@ -25,7 +25,7 @@ public class DeleteProductHandlerTests
     public async Task Handle_ValidRequest_ReturnsSuccessResponse()
     {
         // Arrange
-        var command = new DeleteCartCommand(Guid.NewGuid());
+        var command = new DeleteProductCommand(Guid.NewGuid());
         _repository.DeleteAsync(command.Id, Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
@@ -41,7 +41,7 @@ public class DeleteProductHandlerTests
     public async Task Handle_InvalidRequest_ThrowsValidationException()
     {
         // Arrange
-        var command = new DeleteCartCommand(Guid.Empty);
+        var command = new DeleteProductCommand(Guid.Empty);
 
         // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
@@ -57,7 +57,7 @@ public class DeleteProductHandlerTests
     public async Task Handle_NonExistingProduct_ThrowsKeyNotFoundException()
     {
         // Arrange
-        var command = new DeleteCartCommand(Guid.NewGuid());
+        var command = new DeleteProductCommand(Guid.NewGuid());
         _repository.DeleteAsync(command.Id, Arg.Any<CancellationToken>()).Returns(false);
 
         // Act

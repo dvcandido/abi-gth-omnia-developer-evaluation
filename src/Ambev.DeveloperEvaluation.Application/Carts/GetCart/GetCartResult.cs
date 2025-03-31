@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Ambev.DeveloperEvaluation.Application.Carts.GetCart;
+﻿namespace Ambev.DeveloperEvaluation.Application.Carts.GetCart;
 
 public class GetCartResult
 {
-    public Guid Id { get; set; }
-    public Guid UserId { get; set; }
-    public string UserName { get; set; } = string.Empty;
-    public DateTime Date { get; set; }
-    public List<GetCartItemResult> Items { get; set; } = new();
+    public Guid Id { get; init; }
+    public Guid UserId { get; init; }
+    public string UserName { get; init; } = string.Empty;
+    public DateTime Date { get; init; }
+    public IEnumerable<GetCartItemResult> Items { get; init; } = [];
+    public decimal Total { get; init; }
 }
-
-public class GetCartItemResult
-{
-    public Guid ProductId { get; set; }
-    public string ProductTitle { get; set; } = string.Empty;
-    public int Quantity { get; set; }
-}
+public record GetCartItemResult(Guid ProductId, string ProductTitle, int Quantity, decimal UnitPrice, decimal Discount, decimal TotalPrice);

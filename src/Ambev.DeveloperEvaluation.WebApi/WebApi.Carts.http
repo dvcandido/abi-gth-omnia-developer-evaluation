@@ -7,44 +7,42 @@ POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts
 Content-Type: application/json
 
 {
-  "userId": "beac80bc-7749-44cf-8fd4-f28f67a92af5",
+  "userId": "97986a32-a7b6-4687-9637-a64b7d1ac861",
   "userName": "dvcandido",
   "date": "2025-03-30T12:00:00Z",
   "products": [
     {
       "productId": "b95daf8e-035d-4165-904d-0fdfa57af712",
-      "productTitle": "Kit de Degustação",
-      "quantity": 2
+      "quantity": 9
     },
     {
       "productId": "6b85aa5a-7025-4480-83d2-4f7a7dd337b2",
-      "productTitle": "Cerveja Red Ale",
-      "quantity": 1
+      "quantity": 10
     }
   ]
 }
 
 ### Get cart
-GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/5866d079-452f-4240-bad2-1860b99a8747
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/175f17d0-c8e4-4dab-bce2-e931c619e4ce
 
 ### PUT cart
-PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/5866d079-452f-4240-bad2-1860b99a8747
+PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/175f17d0-c8e4-4dab-bce2-e931c619e4ce
 Content-Type: application/json
 
 {
-  "userId": "beac80bc-7749-44cf-8fd4-f28f67a92af5",
+  "userId": "97986a32-a7b6-4687-9637-a64b7d1ac861",
   "userName": "dvcandido",
   "date": "2025-03-30T12:00:00Z",
   "products": [
     {
       "productId": "b95daf8e-035d-4165-904d-0fdfa57af712",
       "productTitle": "Kit de Degustação",
-      "quantity": 1
+      "quantity": 5
     },
     {
       "productId": "6b85aa5a-7025-4480-83d2-4f7a7dd337b2",
       "productTitle": "Cerveja Red Ale",
-      "quantity": 1
+      "quantity": 10
     },
     {
       "productId": "57bbf27f-a33b-4789-a2c7-ccfd8bd4a1ca",
@@ -56,3 +54,6 @@ Content-Type: application/json
 
 ### Delete cart
 DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts/5866d079-452f-4240-bad2-1860b99a8747
+
+### GetAll cart
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/carts?_page=1&_size=5

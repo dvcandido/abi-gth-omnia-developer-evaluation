@@ -27,13 +27,9 @@ public class CreateCartValidator : AbstractValidator<CreateCartCommand>
             RuleFor(x => x.ProductId)
                 .NotEmpty().WithMessage("Product ID is required.");
 
-            RuleFor(x => x.ProductTitle)
-                .NotEmpty().WithMessage("Product title is required.")
-                .MaximumLength(100).WithMessage("Product title must not exceed 100 characters.");
-
             RuleFor(x => x.Quantity)
                 .GreaterThan(0).WithMessage("Quantity must be greater than 0.")
-                .LessThan(21).WithMessage("Quantity must be less than 20");
+                .LessThanOrEqualTo(21).WithMessage("It is not possible to sell above 20 identical items.");
         }
     }
 }

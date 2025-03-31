@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ambev.DeveloperEvaluation.ORM.Configurations;
+namespace Ambev.DeveloperEvaluation.ORM.Mapping;
 
 public class CartConfiguration : IEntityTypeConfiguration<Cart>
 {

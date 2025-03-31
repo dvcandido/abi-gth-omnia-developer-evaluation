@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ambev.DeveloperEvaluation.ORM.Configurations;
+namespace Ambev.DeveloperEvaluation.ORM.Mapping;
 
 public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 {
@@ -22,6 +22,10 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 
         builder.Property(ci => ci.Quantity)
             .IsRequired();
+
+        builder.Property(ci => ci.UnitPrice)
+            .IsRequired()
+            .HasPrecision(18, 2);
 
         builder.Property(ci => ci.CartId)
             .IsRequired();

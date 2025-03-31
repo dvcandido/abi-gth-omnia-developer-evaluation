@@ -15,6 +15,7 @@ public class CartItemValidator : AbstractValidator<CartItem>
             .MaximumLength(100).WithMessage("Product title must not exceed 100 characters.");
 
         RuleFor(i => i.Quantity)
-            .GreaterThan(0).WithMessage("Quantity must be greater than zero.");
+            .GreaterThan(0).WithMessage("Quantity must be greater than zero.")
+            .LessThanOrEqualTo(21).WithMessage("It is not possible to sell above 20 identical items.");
     }
 }

@@ -34,11 +34,18 @@ public class CartRepository : ICartRepository
 
     public async Task<(IEnumerable<Cart> Products, int TotalCount)> GetAllAsync(int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
     {
-        var query = _context.Products.AsNoTracking();
+        var query = _context.Carts
+                .Include(c => c.Items)
+                .AsNoTracking();
+
         query = ApplyOrdering(order, query);
 
         var totalCount = await query.CountAsync(cancellationToken);
-        var products = await query.Skip((page - 1) * size).Take(size).ToListAsync(cancellationToken);
+
+        var products = await query
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToListAsync(cancellationToken);
 
         return (products, totalCount);
     }
@@ -58,11 +65,7 @@ public class CartRepository : ICartRepository
             return null;
 
         existingCart.SetUserInfo(cart.UserName);
-
-        foreach (var item in cart.Items)
-        {
-            existingCart.UpdateItem(item.ProductId, item.ProductTitle, item.Quantity);
-        }
+        existingCart.MergeItems(cart.Items);
 
         await _context.SaveChangesAsync(cancellationToken);
 
@@ -75,7 +78,7 @@ public class CartRepository : ICartRepository
         {
             var orders = order.Split(',');
 
-            IOrderedQueryable<Product>? orderedQuery = null;
+            IOrderedQueryable<Cart>? orderedQuery = null;
 
             foreach (var o in orders)
             {

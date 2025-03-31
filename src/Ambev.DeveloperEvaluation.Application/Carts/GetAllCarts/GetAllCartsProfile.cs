@@ -7,7 +7,7 @@ public class GetAllCartsProfile : Profile
 {
     public GetAllCartsProfile()
     {
-        CreateMap<Cart, CartItem>();
-        CreateMap<CartItem, CartProduct>();
+        CreateMap<Cart, GetAllCartResult>();
+        CreateMap<CartItem, GetAllCartItemResult>();
     }
 }

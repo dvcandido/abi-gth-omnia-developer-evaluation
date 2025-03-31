@@ -43,7 +43,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts
             });
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ApiResponseWithData<GetCartResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -69,7 +69,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts
             
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -82,7 +82,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(PaginatedList<GetAllCartResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedList<GetAllCartPaginateResult>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllProducts(
@@ -92,7 +92,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            return OkPaginated(_mapper.Map<GetAllCartResponse>(result));
+            return OkPaginated(_mapper.Map<GetAllCartPaginateResult>(result));
         }
 
     }

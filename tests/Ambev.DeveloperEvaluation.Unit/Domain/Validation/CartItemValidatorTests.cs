@@ -13,7 +13,7 @@ public class CartItemValidatorTests
     public void Given_ValidItem_When_Validated_Then_ShouldBeValid()
     {
         // Arrange
-        var item = new CartItem(Guid.NewGuid(), "Product A", 3);
+        var item = new CartItem(Guid.NewGuid(), "Product A", 3, 10m);
 
         // Act
         var result = _validator.Validate(item);
@@ -26,7 +26,7 @@ public class CartItemValidatorTests
     public void Given_ZeroQuantity_When_Validated_Then_ShouldFail()
     {
         // Arrange
-        var item = new CartItem(Guid.NewGuid(), "Product A", 0);
+        var item = new CartItem(Guid.NewGuid(), "Product A", 0, 20m);
 
         // Act
         var result = _validator.Validate(item);
@@ -40,7 +40,7 @@ public class CartItemValidatorTests
     public void Given_EmptyProductTitle_When_Validated_Then_ShouldFail()
     {
         // Arrange
-        var item = new CartItem(Guid.NewGuid(), "", 1);
+        var item = new CartItem(Guid.NewGuid(), "", 1, 10m);
 
         // Act
         var result = _validator.Validate(item);

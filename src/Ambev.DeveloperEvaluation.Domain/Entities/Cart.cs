@@ -20,7 +20,9 @@ public class Cart : BaseEntity
 
     public List<CartItem> Items { get; private set; } = [];
 
-    public void AddItem(Guid productId, string productTitle, int quantity)
+    public decimal Total => Items.Sum(x => x.TotalPrice);
+
+    public void AddItem(Guid productId, string productTitle, int quantity, decimal unitPrice)
     {
         var existingItem = Items.FirstOrDefault(x => x.ProductId == productId);
         if (existingItem != null)
@@ -29,7 +31,7 @@ public class Cart : BaseEntity
         }
         else
         {
-            Items.Add(new CartItem(productId, productTitle, quantity));
+            Items.Add(new CartItem(productId, productTitle, quantity, unitPrice));
         }
     }
 
@@ -40,12 +42,12 @@ public class Cart : BaseEntity
             Items.Remove(item);
     }
 
-    public void UpdateItem(Guid productId, string productTitle, int quantity)
+    public void UpdateItem(Guid productId, string productTitle, int quantity, decimal unitPrice)
     {
         var item = Items.FirstOrDefault(x => x.ProductId == productId);
 
         if (item is null)
-            AddItem(productId, productTitle, quantity);
+            AddItem(productId, productTitle, quantity, unitPrice);
         else
             item.UpdateQuantity(quantity);
     }
@@ -53,6 +55,17 @@ public class Cart : BaseEntity
     public void SetUserInfo(string userName)
     {
         UserName = userName;
+    }
+
+    public void MergeItems(List<CartItem> newItems)
+    {
+        foreach (var newItem in newItems)
+        {
+            UpdateItem(newItem.ProductId, newItem.ProductTitle, newItem.Quantity, newItem.UnitPrice);
+        }
+
+        var newItemsIds = new HashSet<Guid>(newItems.Select(i => i.ProductId));
+        Items.RemoveAll(i => !newItemsIds.Contains(i.ProductId));
     }
 
     public ValidationResultDetail Validate()

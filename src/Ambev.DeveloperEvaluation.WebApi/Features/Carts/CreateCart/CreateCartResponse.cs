@@ -6,6 +6,7 @@ public record CreateCartResponse()
     public Guid UserId { get; init; }
     public string UserName { get; init; } = string.Empty;
     public DateTime Date { get; init; }
-    public List<CreateCartItemResponse> Products { get; init; } = new();
+    public IEnumerable<CreateCartItemResponse> Products { get; init; } = [];
+    public decimal Total { get; init; }
 }
-public record CreateCartItemResponse(Guid ProductId, string ProductTitle, int Quantity);
+public record CreateCartItemResponse(Guid ProductId, string ProductTitle, int Quantity,decimal UnitPrice, decimal Discount, decimal TotalPrice);

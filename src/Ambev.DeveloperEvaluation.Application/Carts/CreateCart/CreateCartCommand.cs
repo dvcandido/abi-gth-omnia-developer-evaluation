@@ -10,4 +10,4 @@ public record CreateCartCommand(): IRequest<CreateCartResult>
     public List<CreateCartItemCommand> Items { get; init; } = [];
 }
 
-public record CreateCartItemCommand(Guid ProductId, string ProductTitle, int Quantity);
+public record CreateCartItemCommand(Guid ProductId, int Quantity);

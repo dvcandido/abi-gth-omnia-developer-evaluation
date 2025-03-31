@@ -6,7 +6,8 @@ public record UpdateCartResponse()
     public Guid UserId { get; init; }
     public string UserName { get; init; } = string.Empty;
     public DateTime Date { get; init; }
-    public List<UpdateCartItemResponse> Products { get; init; } = [];
+    public IEnumerable<UpdateCartItemResponse> Products { get; init; } = [];
+    public decimal Total { get; init; }
 }
 
-public record UpdateCartItemResponse(Guid ProductId, string ProductTitle, int Quantity);
+public record UpdateCartItemResponse(Guid ProductId, string ProductTitle, int Quantity, decimal UnitPrice, decimal Discount, decimal TotalPrice);

@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 
-namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
+public record UpdateCartResult(Guid Id, Guid UserId, string UserName, DateTime Date, List<UpdateCartItemResult> Items, decimal Total);
 
-public record UpdateCartResult(
-    Guid Id,
-    Guid UserId,
-    string UserName,
-    DateTime Date,
-    List<UpdateCartItemResult> Items
-);
-
-public record UpdateCartItemResult(Guid ProductId, string ProductTitle, int Quantity);
+public record UpdateCartItemResult(Guid ProductId, string ProductTitle, int Quantity, decimal UnitPrice, decimal Discount, decimal TotalPrice);
